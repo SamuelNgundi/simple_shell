@@ -16,7 +16,7 @@ void handle_line(char **line, ssize_t read)
 	size_t i, j;
 	ssize_t new_len;
 
-	new_line = get_new_line(*line);
+	new_line = get_new_line(**line);
 	if (new_line == read - 1)
 		return;
 	new_line = malloc(new_line + 1);
