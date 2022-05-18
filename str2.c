@@ -1,131 +1,103 @@
 #include "main.h"
 
 /**
- * _strdup - duplicates a str in the heap memory.
- * @s: Type char pointer str
- * Return: duplicated str
- */
-char *_strdup(const char *s)
-{
-	char *new;
-	size_t len;
-
-	len = _strlen(s);
-	new = malloc(sizeof(char) * (len + 1));
-	if (new == NULL)
-		return (NULL);
-	_memcpy(new, s, len + 1);
-	return (new);
-}
-
-/**
- * _strlen - Returns the lenght of a string.
- * @s: Type char pointer
- * Return: Always 0.
- */
-int _strlen(const char *s)
-{
-	int len;
-
-	for (len = 0; s[len] != 0; len++)
-	{
-	}
-	return (len);
-}
-
-/**
- * cmp_chars - compare chars of strings
- * @str: input string.
- * @delim: delimiter.
+ * _strchr - Locates a character in a string.
+ * @s: The string to be searched.
+ * @c: The character to be located.
  *
- * Return: 1 if are equals, 0 if not.
+ * Return: If c is found - a pointer to the first occurence.
+ *         If c is not found - NULL.
  */
-int cmp_chars(char str[], const char *delim)
+char *_strchr(char *s, char c)
 {
-	unsigned int i, j, k;
+	int index;
 
-	for (i = 0, k = 0; str[i]; i++)
+	for (index = 0; s[index]; index++)
 	{
-		for (j = 0; delim[j]; j++)
+		if (s[index] == c)
+			return (s + index);
+	}
+
+	return (NULL);
+}
+
+/**
+ * _strspn - Gets the length of a prefix substring.
+ * @s: The string to be searched.
+ * @accept: The prefix to be measured.
+ *
+ * Return: The number of bytes in s which
+ *         consist only of bytes from accept.
+ */
+int _strspn(char *s, char *accept)
+{
+	int bytes = 0;
+	int index;
+
+	while (*s)
+	{
+		for (index = 0; accept[index]; index++)
 		{
-			if (str[i] == delim[j])
+			if (*s == accept[index])
 			{
-				k++;
+				bytes++;
 				break;
 			}
 		}
+		s++;
 	}
-	if (i == k)
-		return (1);
+	return (bytes);
+}
+
+/**
+ * _strcmp - Compares two strings.
+ * @s1: The first string to be compared.
+ * @s2: The second string to be compared.
+ *
+ * Return: Positive byte difference if s1 > s2
+ *         0 if s1 = s2
+ *         Negative byte difference if s1 < s2
+ */
+int _strcmp(char *s1, char *s2)
+{
+	while (*s1 && *s2 && *s1 == *s2)
+	{
+		s1++;
+		s2++;
+	}
+
+	if (*s1 != *s2)
+		return (*s1 - *s2);
+
 	return (0);
 }
 
 /**
- * _strtok - splits a string by some delimiter.
- * @str: input string.
- * @delim: delimiter.
+ * _strncmp - Compare two strings.
+ * @s1: Pointer to a string.
+ * @s2: Pointer to a string.
+ * @n: The first n bytes of the strings to compare.
  *
- * Return: string splited.
+ * Return: Less than 0 if s1 is shorter than s2.
+ *         0 if s1 and s2 match.
+ *         Greater than 0 if s1 is longer than s2.
  */
-char *_strtok(char str[], const char *delim)
+int _strncmp(const char *s1, const char *s2, size_t n)
 {
-	static char *splitted, *str_end;
-	char *str_start;
-	unsigned int i, bool;
+	size_t i;
 
-	if (str != NULL)
+	for (i = 0; s1[i] && s2[i] && i < n; i++)
 	{
-		if (cmp_chars(str, delim))
-			return (NULL);
-		splitted = str; /*Store first address*/
-		i = _strlen(str);
-		str_end = &str[i]; /*Store last address*/
+		if (s1[i] > s2[i])
+			return (s1[i] - s2[i]);
+		else if (s1[i] < s2[i])
+			return (s1[i] - s2[i]);
 	}
-	str_start = splitted;
-	if (str_start == str_end) /*Reaching the end*/
-		return (NULL);
-
-	for (bool = 0; *splitted; splitted++)
-	{
-		/*Breaking loop finding the next token*/
-		if (splitted != str_start)
-			if (*splitted && *(splitted - 1) == '\0')
-				break;
-		/*Replacing delimiter for null char*/
-		for (i = 0; delim[i]; i++)
-		{
-			if (*splitted == delim[i])
-			{
-				*splitted = '\0';
-				if (splitted == str_start)
-					str_start++;
-				break;
-			}
-		}
-		if (bool == 0 && *splitted) /*Str != Delim*/
-			bool = 1;
-	}
-	if (bool == 0) /*Str == Delim*/
-		return (NULL);
-	return (str_start);
+	if (i == n)
+		return (0);
+	else
+		return (-15);
 }
 
-/**
- * _isdigit - defines if string passed is a number
- *
- * @s: input string
- * Return: 1 if string is a number. 0 in other case.
- */
-int _isdigit(const char *s)
-{
-	unsigned int i;
-
-	for (i = 0; s[i]; i++)
-	{
-		if (s[i] < 48 || s[i] > 57)
-			return (0);
-	}
-	return (1);
-}
 
 
